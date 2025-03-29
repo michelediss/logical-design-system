@@ -149,7 +149,7 @@ $black: #1e201f !default;
   @return $scale;
 }
 
-// Mixin per generare le classi per background, testo, bordo e fill
+// Mixin per generare le classi per background, testo, bordo e fill per i colori con variazioni
 @mixin generate-color-classes($colors, $variations) {
   @each $name, $base-color in $colors {
     $variation-map: map-get($variations, $name);
@@ -179,7 +179,7 @@ $black: #1e201f !default;
   }
 }
 
-// Mixin per esportare le variabili CSS dei colori
+// Mixin per esportare le variabili CSS dei colori con variazioni
 @mixin export-color-variables($colors, $variations) {
   :root {
     @each $name, $base-color in $colors {
@@ -196,16 +196,38 @@ $black: #1e201f !default;
   }
 }
 
-.fill-black {
-  fill: $black !important;
-}
-.fill-white {
-  fill: $white !important;
+// Mixin per generare le classi per background, testo, bordo e fill per i colori base (black e white)
+@mixin generate-base-color-classes($name, $color) {
+  .bg-#{$name} {
+    background-color: $color !important;
+  }
+  .text-#{$name} {
+    color: $color !important;
+  }
+  .border-#{$name} {
+    border-color: $color !important;
+  }
+  .fill-#{$name} {
+    fill: $color !important;
+  }
 }
 
-// Genera le classi per i colori e esporta le variabili CSS
+// Mixin per esportare le variabili CSS per i colori base (black e white)
+@mixin export-base-color-variables() {
+  :root {
+    --black: #{$black};
+    --white: #{$white};
+  }
+}
+
+// Genera le classi per i colori con variazioni e esporta le variabili CSS
 @include generate-color-classes($my-colors, $my-colors-variations);
 @include export-color-variables($my-colors, $my-colors-variations);
+
+// Genera le classi e le variabili per i colori base black e white
+@include generate-base-color-classes("black", $black);
+@include generate-base-color-classes("white", $white);
+@include export-base-color-variables();
 
 // =========================
 // Containers & Breakpoints
